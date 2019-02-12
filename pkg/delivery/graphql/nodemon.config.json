@@ -1,0 +1,12 @@
+{
+  "verbose": false,
+  "debug": false,
+  "exec": "node --inspect --expose-gc -r ts-node/register ./index.ts",
+  "ignore": ["node_modules"],
+  "events": {
+    "restart": "echo \"[Warning] Remember run npm run test b4 push to dev branch !\""
+  },
+  "watch": ["./.env", "./libs","./index.ts", "tsconfig.json", "./resolvers"],
+  "ext": "ts, tsx, graphql, json",
+  "inspect": true
+}

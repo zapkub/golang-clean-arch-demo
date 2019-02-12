@@ -1,0 +1,38 @@
+
+syntax = "proto3";
+package agent;
+option go_package = "go-design-pattern-demo/pkg/delivery/grpc/proto";
+
+message TodoItem {
+    string ID = 1;
+    string Description = 2;
+    string UserID = 3;
+    bool IsChecked = 4;
+}
+
+service Todo {
+    rpc GetTodos (GetTodosInput) returns (GetTodosOutput);
+    rpc CreateTodo (CreateTodoInput) returns (CreateTodoOutput);
+    rpc CheckTodo (CheckTodoInput) returns (CheckTodoOutput);
+}
+
+message CheckTodoInput {
+    string ID = 1;
+}
+message CheckTodoOutput {
+    TodoItem Result = 1;
+}
+message CreateTodoInput {
+    string Description = 1;
+    string UserID = 2;
+}
+message CreateTodoOutput {
+    TodoItem Result = 1;
+}
+
+message GetTodosInput {
+    string UserID = 1;
+}
+message GetTodosOutput {
+    repeated TodoItem Result = 1;
+}

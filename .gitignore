@@ -1,0 +1,5 @@
+node_modules
+vendor
+*.sqlite
+.idea
+yarn-error.log
