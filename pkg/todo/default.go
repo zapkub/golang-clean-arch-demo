@@ -23,22 +23,22 @@ type ListInput struct {
 	UserID string
 }
 type ListOutput []model.Todo
+
 type TodoRepository interface {
 	Create(in *CreateInput) (*CreateOutput, error) // just create record
 	Update(in *UpdateInput) (*UpdateOutput, error) // just update record
 	List(in *ListInput) (*ListOutput, error)       // just return records
+}
+type TodoUsecase interface {
+	CreateTodoAndUserIfNotExists(in *CreateInput) (*CreateOutput, error) // find if useID exists and create new if not, create record
+	ToggleTodoByID(in *ToggleInput) (*ToggleOutput, error)               // find if task exists, change isChecked to invert of value
+	List(in *ListInput) (*ListOutput, error)                             // find if user exists or not and return records of use
 }
 
 type ToggleInput struct {
 	ID string
 }
 type ToggleOutput model.Todo
-type TodoUsecase interface {
-	CreateTodoAndUserIfNotExists(in *CreateInput) (*CreateOutput, error) // find if useID exists and create new if not, create record
-	ToggleTodoByID(in *ToggleInput) (*ToggleOutput, error)               // find if task exists, change isChecked to invert of value
-	List(in *ListInput) (*ListOutput, error)                             // find if user exists or not and return records of user
-}
-
 type DefaultTodoRepository struct {
 	DB *gorm.DB
 }

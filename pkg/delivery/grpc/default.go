@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
 	"go-design-pattern-demo/pkg/delivery/grpc/proto"
 	"go-design-pattern-demo/pkg/model"
 	"go-design-pattern-demo/pkg/todo"
@@ -19,6 +20,11 @@ func (d *DefaultTodoServer) GetTodos(c context.Context, in *proto.GetTodosInput)
 	out, err := d.Todo.List(&todo.ListInput{
 		UserID: in.UserID,
 	})
+	if gorm.IsRecordNotFoundError(err) {
+		return &proto.GetTodosOutput{
+			Result: []*proto.TodoItem{},
+		}, nil
+	}
 
 	var result []*proto.TodoItem
 	for _, i := range []model.Todo(*out) {
@@ -40,6 +46,9 @@ func (d *DefaultTodoServer) CreateTodo(c context.Context, in *proto.CreateTodoIn
 		UserID:      in.UserID,
 		Description: in.Description,
 	})
+	if gorm.IsRecordNotFoundError(err) {
+		return &proto.CreateTodoOutput{}, nil
+	}
 
 	return &proto.CreateTodoOutput{
 		Result: &proto.TodoItem{
